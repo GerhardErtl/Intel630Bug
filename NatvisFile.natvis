@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="Math::Matrix4">
+    <DisplayString>Matrix4</DisplayString>
+    <Expand>
+      <Item Name="[X]" ExcludeView="simple">m_mat.r[0].m128_f32</Item>
+      <Item Name="[Y]" ExcludeView="simple">m_mat.r[1].m128_f32</Item>
+      <Item Name="[Z]" ExcludeView="simple">m_mat.r[2].m128_f32</Item>
+      <Item Name="[W]" ExcludeView="simple">m_mat.r[3].m128_f32</Item>
+    </Expand>
+  </Type>
+
+  <Type Name="Math::Vector4">
+    <DisplayString>Vector4 X {m_vec.m128_f32[0]} Y {m_vec.m128_f32[1]} Z {m_vec.m128_f32[2]} W {m_vec.m128_f32[3]}</DisplayString>
+  </Type>
+  <Type Name="Math::Vector3">
+    <DisplayString>Vector3 X {m_vec.m128_f32[0]} Y {m_vec.m128_f32[1]} Z {m_vec.m128_f32[2]}</DisplayString>
+  </Type>
+
+</AutoVisualizer>
