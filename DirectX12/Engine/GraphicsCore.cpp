@@ -353,18 +353,24 @@ void GraphicsCore::Initialize(HWND g_hWnd)
                 }
             }
 
-            if (desc.DedicatedVideoMemory > MaxSize)
             {
                 const HRESULT hr = D3D12CreateDevice(pAdapter.Get(), D3D_FEATURE_LEVEL_12_0, _uuidof(ID3D12Device), nullptr);
                 if (SUCCEEDED(hr))
                 {
-                    Utility::Printf(L"D3D12-capable hardware found:  %s (%u MB)\n", desc.Description, desc.DedicatedVideoMemory >> 20);
+                    if (desc.DedicatedVideoMemory > MaxSize)
+                    {
+                        Utility::Printf(L"D3D12-capable hardware found:  %s (%u MB)\n", desc.Description, desc.DedicatedVideoMemory >> 20);
 
-                    m_RecommendedAdapter = pAdapter;
-                    MaxSize = desc.DedicatedVideoMemory;
+                        m_RecommendedAdapter = pAdapter;
+                        MaxSize = desc.DedicatedVideoMemory;
 
-                    // ALR: Erstmal den 0ten Adapter nehmen
-                    //break;
+                        // ALR: Erstmal den 0ten Adapter nehmen
+                        //break;
+                    }
+                    else
+                    {
+                        Utility::Printf(L"D3D12-capable hardware skipped:  %s (%u MB)\n", desc.Description, desc.DedicatedVideoMemory >> 20);
+                    }
                 }
             }
         }
@@ -378,6 +384,24 @@ void GraphicsCore::Initialize(HWND g_hWnd)
                 pDevice.As(&pDevice4);
 
                 m_pDevice = pDevice4.Detach();
+
+                {
+                    auto luid = m_pDevice->GetAdapterLuid();
+
+                    UINT i = 0;
+                    ComPtr<IDXGIAdapter> tempAdapter;
+                    while (dxgiFactory->EnumAdapters(i, &tempAdapter) != DXGI_ERROR_NOT_FOUND)
+                    {
+                        DXGI_ADAPTER_DESC desc;
+                        tempAdapter->GetDesc(&desc);
+                        if (desc.AdapterLuid.HighPart == luid.HighPart && desc.AdapterLuid.LowPart == luid.LowPart)
+                        {
+                            Utility::Printf(L"D3D12-capable hardware used:  %s (%u MB)\n", desc.Description, desc.DedicatedVideoMemory >> 20);
+                            std::wstring description = desc.Description;
+                        }
+                        ++i;
+                    }
+                }
             }
             else
             {
