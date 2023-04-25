@@ -336,22 +336,22 @@ void GraphicsCore::Initialize(HWND g_hWnd)
 
             std::wstring description = desc.Description;
 
-            if (description.find(L"Intel") != std::string::npos)
-            {
-                const HRESULT hr = D3D12CreateDevice(pAdapter.Get(), D3D_FEATURE_LEVEL_12_0, _uuidof(ID3D12Device), nullptr);
-                if (SUCCEEDED(hr))
-                {
-                    Utility::Printf(L"D3D12-capable hardware found:  %s (%u MB)\n", desc.Description, desc.DedicatedVideoMemory >> 20);
-            
-                    m_RecommendedAdapter = pAdapter;
-                    MaxSize = desc.DedicatedVideoMemory;
-            
-                    //this->m_IsIntelDevice = false;
-            
-                    // ALR: Erstmal den 0ten Adapter nehmen
-                    break;
-                }
-            }
+            //if (description.find(L"Intel") != std::string::npos)
+            //{
+            //    const HRESULT hr = D3D12CreateDevice(pAdapter.Get(), D3D_FEATURE_LEVEL_12_0, _uuidof(ID3D12Device), nullptr);
+            //    if (SUCCEEDED(hr))
+            //    {
+            //        Utility::Printf(L"D3D12-capable hardware found:  %s (%u MB)\n", desc.Description, desc.DedicatedVideoMemory >> 20);
+            //
+            //        m_RecommendedAdapter = pAdapter;
+            //        MaxSize = desc.DedicatedVideoMemory;
+            //
+            //        //this->m_IsIntelDevice = false;
+            //
+            //        // ALR: Erstmal den 0ten Adapter nehmen
+            //        break;
+            //    }
+            //}
 
             {
                 const HRESULT hr = D3D12CreateDevice(pAdapter.Get(), D3D_FEATURE_LEVEL_12_0, _uuidof(ID3D12Device), nullptr);
